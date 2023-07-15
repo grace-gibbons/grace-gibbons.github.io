@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+    <TITLE>Glitches</TITLE>
+    <link rel="stylesheet" href="style/index.css">
+</HEAD>
+<BODY>
+    <ul>
+        <li><a href="index.htm">Home</a></li>
+        <li><a href="features.htm">Features</a></li>
+        <li><a href="glitches.htm">Glitches and Bugs</a></li>
+        <li><a href="conceptArt.htm">Concept Art</a></li>
+        <li><a href="wackyImages.htm">Wacky Images</a></li>
+    </ul>
+
+    <div>
+        <h1>Known Bugs and Glitches</h1>
+        <p>
+            A project so large is bound to have some problems. This is a list of some of the glitches and bugs that I am aware of.
+        </p>
+
+        <div>
+            <h2>Fullscreen and Light</h2>
+            <p>
+                I'm currently adding a toggleable mode that will allow the user to switch between windowed and fullscreen mode, but a strange glitch
+                occurs where the entire tilemap vanishes from sight. I have determined that the re-rendering of light is somehow causing this issue.
+            </p>
+
+            <figure>
+                <img src="images/invisibleMap13July2023.png" alt="Game Image" width="35%">
+                <figcaption>An example of the result of toggling between fullscreen and windowed mode.</figcaption>
+            </figure>
+        </div>
+
+        <div>
+            <h2>Player Jump Glitch</h2>
+            <p>
+                If the player jumps and lands on the very edge of a tile, the game will think that they are still falling and they will not be able to
+                jump again unless they move.
+            </p>
+            <p>
+                This has been a known issue for a while now, because it does not affect development, but it will affect the player experience. I've had plans
+                to add some upgrades to the player motion system, so debugging this will probably wait until then.
+            </p>
+        </div>
+
+        <div>
+            <h2>Loading a New Level</h2>
+            <p>
+                Loading a level is a complicated task, since every single tile on the map needs to get read and processed, so it's no surprise that
+                loading up a new level causes a massive drop in performace. I plan on adding some sort of waiting state between levels, to handle performance
+                issues.
+            </p>
+            <p>
+                I wouldn't classify this as a bug, but it's an issue that needs to be taken care of.
+            </p>
+        </div>
+    </div>
+
+</BODY>
+</HTML>
