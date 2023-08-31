@@ -1,0 +1,165 @@
+<HTML>
+<HEAD>
+    <TITLE>Update 1: July 2022 - July 2023</TITLE>
+    <link rel="stylesheet" href="../style/index.css">
+</HEAD>
+<BODY>
+
+    <h1>Update 2: July 2023 - August 2023</h1>
+
+    <div>
+        I’ve made substantial progress in about a month and a half and I’m very excited to show off what I’ve done! I’m going to split this update into bug fixes and features added, because there are a lot of changes to cover in both of those areas.
+    </div>
+
+    <h2>Bug Fixes</h2>
+    <div>
+        In order of when they were changed (oldest to newest) here is a list of the bugs that have been addressed.
+    </div>
+    <br />
+
+    <div>
+        The light rendering code had some serious issues with rendering, and it will now render with respect to the camera, just like all the other game objects. Visibly, nothing has changed, but rendering with respect to the camera is incredibly important to make sure things are rendering in the correct location, and have the proper world location.
+    </div>
+    <br />
+
+    <div>
+        Light source tiles added to the tilemap as the result of a reaction now get lit as they are supposed to.
+    </div>
+    <br />
+
+    <div>
+        Player now falls at a normal speed when they crouch. Previously, they could slow themselves down in the air by crouching (which halves the player’s speed).
+    </div>
+    <br />
+
+    <div>
+        Fixed bug where player would land on the very edge of a tile, and still be considered falling. This meant they were unable to jump again, as they were not considered on the ground.
+    </div>
+    <br />
+
+    <div>
+        Fixed ambient light calculation to include ALL underground tiles. Basically, I had to change the recursive loop to continue until all tiles were covered, instead of stopping when the light level reached the minimum.
+    </div>
+    <br />
+
+    <div>
+        Changed parallax background to calculate the screen size and multiply its own size to fit the screen. Previously, if the image was not large enough, there would be black space in the background.
+    </div>
+    <br />
+
+    <div>
+        Fixed error where inventory text was not updated upon level start, so the slots would say “NULL” instead of “null_item”
+    </div>
+    <figure>
+        <img src="../images/update2/nullItem.png" alt="Game Image" width="40%">
+        <figcaption>Here, all the invemtory slots are filled with "null_item" (an empty item) as they should be.</figcaption>
+    </figure>
+    <br />
+
+    <div>
+        Fixed bug where game enters fullscreen, and causes the entire tilemap to vanish. It’s worth noting that I fixed this error, but upon testing it on another device, found that a similar error still remains present. Because the code is identical, I can only assume that there is a discrepancy between how different devices handle rendering, which is something I need to look into.
+    </div>
+    <figure>
+        <img src="../images/update2/lightProblem.png" alt="Game Image" width="50%">
+        <figcaption>Example of the problem, where the tilemap completely vanishes after toggling fullscreen mode.</figcaption>
+    </figure>
+    <br />
+
+
+    <h2>Features</h2>
+
+    <div>
+        <b>Level Loading</b><br />
+        Implemented the ability to load a level from a startup file (startup.json), so the startup level can easily be changed in an external file. I also added the ability to write the current level to that file, so we can “save” a level, however I have yet to actually include this feature since I don’t have a save button.
+    </div>
+    <br />
+
+    <div>
+        <b>Items</b><br />
+        Items now have a property that allows them to break tiles. Certain breakable tiles now require an item to break them, defined in the item properties.
+    </div>
+    <br />
+
+    <div>
+        <b>Audio</b><br />
+        I have added a very simplistic audio player to load and play .wav files. This functionality has yet to be used anywhere, but when I want to start adding sounds and music, I will not have to worry about the lower level implementation. I am using SDL’s mixer library to handle the audio files.
+    </div>
+    <br />
+
+    <div>
+        <b>Game State</b><br />
+        Added game states, such as: loading and active, to help me determine what the game is currently doing. These states are going to be used a lot more in the future, for determining logic. I also added a menu state, which is unused (because I currently have no menus implemented).
+    </div>
+    <br />
+
+    <div>
+        <b>Triggers</b><br />
+        A LocationKeyboardTrigger has been added, which detects the player’s location on the map and keyboard input. Currently, I am just waiting for the key ‘T’, but down the line I want to be able to define what keys I want to listen for. This trigger will be used to mimic portal functionality, as I can make triggers that detect the player’s location link to reactions that teleport the player to another location. I have also created a YAxisTrigger which detects the player’s location on the y-axis. This trigger will be helpful in checking if the player has completely fallen off the map.
+    </div>
+    <br />
+
+    <div>
+        <b>Reactions</b><br />
+        I added a ton of reactions, so here's the list and quick descriptions:
+        Light Visibility: Toggles the light sources to render or not <br />
+        Map Visibility: Toggles the visibility of the tilemap<br />
+        Next Level: Loads and begins the next level<br />
+        Player Light Visibility: Toggles the visibility of the player’s light<br />
+        Toggle Dark: Toggles the darkness to be on or off<br />
+        Toggle Bright: Toggles the bright tilemap effect<br />
+        Toggle Flight: Toggles the player’s ability to fly<br />
+        Toggle Jump: Switches player’s jump height between normal and high<br />
+        Toggle Keyboard: Toggles whether or not the keyboard is accepting input<br />
+        Toggle Inventory Lights: Switches how many light sources the inventory can carry (one or many)<br />
+        UI Visibility: Toggles the visibility of the UI<br />
+    </div>
+    <br />
+
+    <div>
+        <b>Animations</b><br />
+        The tilemap can now handle animated tiles. This property is defined in the tileData.json file.
+    </div>
+    <br />
+
+    <div>
+        <b>Placeable Locations</b><br />
+        Light sources can no longer be placed in midair. They now can only be placed on solid (non breakable) ground or hanging off a collidable tile.
+    </div>
+    <br />
+
+    <div>
+        <b>Inventory</b><br />
+        The inventory will now make sure it has space to hold an item when the player breaks one. If there is no space, the tile will not be broken at all. Right now a debug message appears when this happens, but in the future there will be some sort of on screen reaction. Additionally, I added an inventory option that will only allow the inventory to contain one light source.
+    </div>
+    <br />
+
+    <div>
+        <b>Tiles</b><br />
+        Tiles can be configured to display a different texture when they are lit.
+    </div>
+    <figure>
+        <img src="../images/update2/litTile.png" alt="Game Image" width="30%">
+        <figcaption>The orange "smile" tile is currently lit by the player.</figcaption>
+    </figure>
+    <figure>
+        <img src="../images/update2/unlitTile.png" alt="Game Image" width="30%">
+        <figcaption>The orange tile is no longer lit, so there is no more smile :(</figcaption>
+    </figure>
+    <br />
+
+    <div>
+        <b>Enemies</b><br />
+        I have attempted to create enemies before, but the logic fell through because of issues with the light engine. Enemies are meant to be able to detect or “see” light sources within an area that they can see. They will then pathfind to the “brightest” light they can see. After rectifying issues in the light engine (done in the previous update), I was able to bring enemies back into play, using some of the old pathfinding code I had already written. Additionally, for debugging purposes, I added a feature that will allow me to see what tiles an enemy can see.
+    </div>
+    <figure>
+        <img src="../images/update2/enemyVision.png" alt="Game Image" width="50%">
+        <figcaption>The enemy can currently "see" the tiles highlighted in red. These tiles are lit and within the enemy's radius.</figcaption>
+    </figure>
+    <br />
+
+    <div>
+        <b>Collisions</b><br />
+        There is now a system in place that will detect if the player and enemy are colliding. It currently has no effect, but the detection system works.
+    </div>
+</BODY>
+</HTML>

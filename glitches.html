@@ -7,6 +7,7 @@
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="features.html">Features</a></li>
+        <li><a href="updates.html">Updates</a></li>
         <li><a href="glitches.html">Glitches and Bugs</a></li>
         <li><a href="conceptArt.html">Concept Art</a></li>
         <li><a href="wackyImages.html">Wacky Images</a></li>
@@ -23,24 +24,14 @@
             <p>
                 I'm currently adding a toggleable mode that will allow the user to switch between windowed and fullscreen mode, but a strange glitch
                 occurs where the entire tilemap vanishes from sight. I have determined that the re-rendering of light is somehow causing this issue.
+                <br />
+                Update: This problem has been solved, but a similar issue persists when tested on another device.
             </p>
 
             <figure>
-                <img src="images/invisibleMap13July2023.png" alt="Game Image" width="35%">
+                <img src="images/bugs/invisibleMap13July2023.png" alt="Game Image" width="35%">
                 <figcaption>An example of the result of toggling between fullscreen and windowed mode.</figcaption>
             </figure>
-        </div>
-
-        <div>
-            <h2>Player Jump Glitch</h2>
-            <p>
-                If the player jumps and lands on the very edge of a tile, the game will think that they are still falling and they will not be able to
-                jump again unless they move.
-            </p>
-            <p>
-                This has been a known issue for a while now, but I have yet to fix it because it hasn't causes problems in development. I've had plans
-                to add some upgrades to the player motion system, so debugging this will probably wait until then.
-            </p>
         </div>
 
         <div>

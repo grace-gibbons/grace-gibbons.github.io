@@ -1,0 +1,307 @@
+<HTML>
+<HEAD>
+    <TITLE>Update 1: July 2022 - July 2023</TITLE>
+    <link rel="stylesheet" href="../style/index.css">
+</HEAD>
+<BODY>
+
+    <h1>Update 1: July 2022 - July 2023</h1>
+
+    <div>
+        My updates will typically not span an entire year, but because this website was created a year after development started, I figured it would make the most sense to keep all these features in one space. I'm not going to be reviewing the details of every single thing I created, but I will go over the highlights.
+    </div>
+
+    <div>
+        <h2>Dynamic Tilemaps</h2>
+        <p>
+            All tilemap data gets stored and read from tmx files, which are a version of modified xml documents. Each number relates to the id of a unique
+            tile on the map. These chunks of tile data are separated into layers, which make up a tilemap.
+        </p>
+        <p>
+            <b>Example layer of a tmx File:</b> <br />
+            &ltlayer id="0" name="Layer 0" width="5" height="5"&gt <br />
+            &emsp;&ltdata encoding="csv"&gt <br />
+            &emsp;&emsp;0,0,0,0,0, <br />
+            &emsp;&emsp;0,0,0,0,0, <br />
+            &emsp;&emsp;0,0,0,0,0, <br />
+            &emsp;&emsp;1,1,1,1,1, <br />
+            &emsp;&emsp;2,2,2,2,2  <br />
+            &emsp;&lt/data&gt<br />
+            &lt/layer&gt<br />
+        </p>
+        <p>
+            Tiles can be individually edited to create a variety of maps. I have also included a json file, that stores tile specific data,
+            allowing different tiles to have different properties, including name, texture, if the tile is breakable, and if the tile gives off light.
+            This allows me to easily change details about individual tiles and edit the map.
+        </p>
+        <figure>
+            <img src="../images/update1/firstImage2Aug2022.png" alt="Game Image" width="40%">
+            <figcaption>One of the earliest tilemaps, from 2 August 2022.</figcaption>
+        </figure>
+        <p>
+            Loading and rendering tmx files was one of the very first features implemented and has since undergone many edits, but remains the
+            backbone of my game.
+        </p>
+    </div>
+
+    <div>
+        <h2>Player</h2>
+        <p>
+            Every game needs a player to move around the screen and interact with the world. While my current player is just displayed as
+            a red rectangle, there is a wide range of motion currently implemented.
+        </p>
+        <p>
+            <b>Movement</b><br />
+            Like many other computer games, the user controls the player using wasd. <br />
+            <b>Jump</b><br />
+            The player can jump using the space bar. Quickly pressing and releasing the space bar will shorten the height, while holding
+            it will make the player jump to their maximum height. The difference between the two is hard to see because the player can only jump about
+            3 tiles, and even a quick press of the space bar will allow them to get within that range. <br />
+            <b>Flight</b><br />
+            Double tapping the space bar allows the player to fly for a few seconds before they float slowly back to the ground. <br />
+            <b>Crouch</b><br />
+            Holding the shift button reduces the player's speed by half.
+        </p>
+    </div>
+
+    <div>
+        <h2>Camera</h2>
+        <p>
+            The player is free to move around the world, and gets followed by a camera, meaning that they always remain at the center of
+            the screen. The width and height of the camera determine how much of the world the player can see at any given time.
+        </p>
+    </div>
+
+    <div>
+        <h2>Light</h2>
+        <p>
+            Light has been the most time consuming, frustrating, and complex features that I have had to develop so far. I'm incredibly proud of
+            how far it's come and what it looks like today.
+        </p>
+
+        <figure>
+            <img src="../images/update1/light2.png" alt="Game Image" width="35%">
+            <figcaption>Light, as of July 2023.</figcaption>
+        </figure>
+
+        <p>
+            Orignally (back in September, 2022), the plan was to light each tile indiviually, giving off a very blocky-looking radial light effect. Upon seeing the effect,
+            I realized two things. First, I didn't like how it looked, which was unfortunate to discover after I had coded it. The second, is that the
+            system was terribly inefficient and caused all sorts of lag. From there, I decided not to light tiles individually, rather, I should
+            render a circle of light, then 'erase' the parts that were meant to be shadows.
+        </p>
+        <p>
+            New plan in mind, I set off to do just that. I managed to render a circle, calculating and drawing each pixel individually. With a bit of math
+            I was able to calculate points on a line between the player and tiles that the light would collide with. Instead of rendering pixels individually,
+            I created my own faded light texture, to create the effect I was looking for.
+        </p>
+
+        <figure>
+            <img src="../images/update1/earlyLight8Dec2022.png" alt="Game Image" width="35%">
+            <figcaption>An example of calculating lines between the player and the four corners of every collidable tile.</figcaption>
+        </figure>
+
+        <p>
+            There was just one small, small problem. It was terribly, horribly inefficient. So I made some changes and tried to optimize my
+            calculations. It was slightly better, but not good enough, as the framerate was still well below 60fps. So I tried again, and again, and again. In total, I believe the light code has
+            undergone at least four major refactors (as of July, 2023).
+        </p>
+
+
+        <figure>
+            <img src="../images/update1/lightSphere16Dec2023.png" alt="Game Image" width="35%">
+            <figcaption>One of the earliest versions of what would become my modern light system.</figcaption>
+        </figure>
+
+        <p>
+            I had started to lose hope that I would be able to fix it. I did all I could to lessen the number of tiles that needed calculation and tried
+            to speed up the process as much as possible. Then, finally, in July of 2023, I resorted to trying one last thing: threading. It had been in the
+            back of my mind for a while, but I dreaded it, because I had only ever done threading in C, and that was no easy task. I quickly learned that
+            C++ had much easier ways to parallelize for loops, which took my framerate from about 45fps to around 55fps.
+        </p>
+        <p>
+            It seemed that I had found a solution to my problem, and after my testing and refactoring, the game currently runs at 57fps under stress
+            (where the player is running around, and has a large light radius). If the player has a smaller light radius, or none at all, it can run
+            at 60fps no problem.
+        </p>
+        <p>
+            Now, I have a light system that can apply lights of different sizes and colors to any tile. Along the way, I also created what I call
+            an ambient light system, which gives "underground" tiles a darkened effect. This helps to break up the monotonous block of solid color
+            that I currently have.
+        </p>
+
+
+        <figure>
+            <img src="../images/update1/light1.png" alt="Game Image" width="35%">
+            <figcaption>Another look at light. Take note of the dark fade underground, a result of ambient light.</figcaption>
+        </figure>
+
+        <p>
+            After almost one year, I have a light system I'm very pleased with, and I'm excited what the final product will look like when
+            I finalize the light textures and tilesets.
+        </p>
+    </div>
+
+    <div>
+        <h2>Debug Features</h2>
+        <p>
+            This game would not be where it was today without the debug features I implemented. One of the first features created was a toggleable
+            menu that displayed basic information about the world, the mouse, and the player. Seeing this data in real time on the screen is integral
+            for debugging and is something that I use everyday.
+        </p>
+        <figure>
+            <img src="../images/update1/debugMode.png" alt="Game Image" width="35%">
+            <figcaption>Debug Mode</figcaption>
+        </figure>
+        <p>
+            Along with the general debug screen, there is a light debug mode, which displays the light level of every tile. It's a bit overwhelming
+            to look at, but incredibly useful for determining if light is being calculated properly. Level 8 is considered neutral, 9 is for lit tiles,
+            and values 0-7 are for darkened tiles of various levels (where 0 is the darkest).
+        </p>
+        <figure>
+            <img src="../images/update1/lightDebugMode.png" alt="Game Image" width="35%">
+            <figcaption>Light Debug Mode</figcaption>
+        </figure>
+        <p>
+            Outside of the game window, there is a console window which features my custom made error logger. It's fairly simple, but will display
+            various data about high level events, such as level loading and initializations. It will also log errors in loading various files, which rarely
+            pop up, but are fatal when they do. The logger also includes a time stamp, which helps me make sure files are being loaded in a reasonable
+            amount of time.
+        </p>
+        <figure>
+            <img src="../images/update1/logger.png" alt="Game Image" width="35%">
+            <figcaption>Logger</figcaption>
+        </figure>
+    </div>
+
+    <div>
+        <h2>Moveable Tiles</h2>
+        <p>
+            The player can interact with the world in a few ways, one of the most prevalent being their ability to collect specific tiles and
+            place them back down. Tiles can be collected by left clicking with the mouse and placed by right clicking. Only certain tiles can
+            be moved around, to stop the player from being able to disassemble the entire map.
+        </p>
+        <p>
+            Some tiles that give off light, are also moveable. They act exactly the same as moveable tiles, but give off a radius of light that will
+            vanish when the tile is broken and return when the tile is placed back down.
+        </p>
+    </div>
+
+    <div>
+        <h2>Inventory</h2>
+        <p>
+            The player can pick tiles up, but what good is that if they don't actually know what they've collected? In comes the inventory,
+            which stores items and displays them on the screen. The player can cycle through the first three slots with the number keys or the mouse
+            scroll wheel.
+        </p>
+        <figure>
+            <img src="../images/update1/hotbar.png" alt="Game Image" width="25%">
+            <figcaption>The inventory hotbar, composed of the first three inventory slots.</figcaption>
+        </figure>
+        <p>
+            A button can be pressed to reveal the whole inventory, but as of now there is no way for the player to rearrange the items. During testing and
+            development this has not been an issue, but I will eventually have to implement some sort of system for them to manage their inventory.
+        </p>
+        <figure>
+            <img src="../images/update1/fullInventory.png" alt="Game Image" width="25%">
+            <figcaption>Display of every item in the inventory</figcaption>
+        </figure>
+    </div>
+
+    <div>
+        <h2>Configurable Levels</h2>
+        <p>
+            Here's where things start to get really exciting, and just a tad bit complicated.
+        </p>
+        <p>
+            I already have a system in place to load and render tilemaps, which is excellent. But where do I set the player's starting
+            location? What if the player is done with the current map, and the next tilemap needs to get loaded? The solution: levels, which can store
+            a variety of data, including an associated tilemap to load.
+        </p>
+        <p>
+            Level data gets stored in a json file and holds details such as the player's start location, a path to the tilemap, and sets of
+            triggers and reactions.
+        </p>
+        <h3>Triggers and Reactions</h3>
+        <p>
+            The idea behind triggers and reactions is fairly simple. Event A happens and event B gets triggered. For example, the player enters
+            a certain area, and an item gets added to their inventory. Triggers and reactions take a my simple tilemap loader and turn it into
+            something more playable. Each level has its own defined set of triggers and reactions that are fully customizable, which makes
+            having variety in levels easy to attain.
+        </p>
+
+        <p>
+            There are currently three types of triggers. Each of these detect details about the state of the game, and are connected to
+            a reaction. When the trigger condition becomes true, the reaction will occur. Triggers can either be triggered once or can be toggled
+            between true and false, a setting that I can define in the level's json file.
+        </p>
+        <p>
+            <b>Map Triggers</b> <br />
+            Map triggers detect tiles on the map. If a player places a specific tile in a specific location, then this trigger is true. It
+            is able to handle any number of tiles, so the player may need to place more than one tile in the correct location in order to trigger the reaction.
+        </p>
+        <p>
+            <b>Event Triggers</b> <br />
+            This trigger detects a tile event in a specific location on the map. A tile event consists of either breaking or placing any tile,
+            so if the player does that in a set location, this trigger becomes true.
+        </p>
+        <p>
+            <b>Location Trigger</b> <br />
+            Location triggers detect the location of the player. If they enter a certain region, it is triggered.
+        </p>
+
+        <p>
+            There are currently six types of reactions, which occur when their paired trigger conditions are met.
+        </p>
+        <p>
+            <b>Tilemap Reaction</b> <br />
+            The tilemap reaction can either remove or add a defined layer of tiles. This will give the effect that a bunch of tiles have
+            either appeared or vanished on the map. I can define as many of these layers as I want, and each layer can have any configuration
+            of tiles.
+        </p>
+        <p>
+            <b>Clear Inventory Reaction</b> <br />
+            This reaction is pretty self explanatory, it just clears the player's inventory.
+        </p>
+        <p>
+            <b>Add To Inventory Reaction</b> <br />
+            Any number of items can be added to the inventory with this reaction.
+        </p>
+        <p>
+            <b>Remove From Inventory Reaction</b> <br />
+            Individual items can be removed from the inventory using this reaction.
+        </p>
+        <p>
+            <b>Next Level Reaction</b> <br />
+            The next level reaction will load the level that is defined at the path given to this reaction.
+        </p>
+        <p>
+            <b>Location Reaction</b> <br />
+            This reaction will move the player to a given location in the world.
+        </p>
+        <p>
+            The great thing about my triggers and reactions is that they can be mixed and matched in any different way, because they are linked
+            with a unique id. The only current bounds are that each trigger must have ONE reaction. In the future, I may expand the system,
+            but for now it fits my needs and is customizable enough that I can add new triggers and reactions as needed.
+        </p>
+    </div>
+
+    <div>
+        <h2>Animations</h2>
+        <p>
+            I'll be the first to admit that in it's current state my game looks pretty flat. The world exists, but it doesn't have any life and
+            to make matters worse there isn't a lot of visual feedback. Animations will help bring life to the world, when I get around to fully
+            implementing them. The code is written, but I don't have any animation art completed as of right now, so there are no animated parts in the game.
+        </p>
+
+    </div>
+
+    <div>
+        <h2>Scrolling Background</h2>
+        <p>
+            One of the many things that helps the world come to life the the scrolling background of stars. It's not intergral for the game's
+            functionality, but it's a nice touch.
+        </p>
+    </div>
+</BODY>
+</HTML>

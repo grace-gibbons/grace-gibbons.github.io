@@ -31,7 +31,6 @@ ul {
     padding: 15px 15px;
 }
 
-
 #last-updated {
     background-color: #f27f0c;
 }
@@ -43,4 +42,20 @@ img {
 
 figcaption {
     text-align: center; 
+}
+
+a.update {
+    background-color: transparent;
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+    padding: 0px 0px;
+}
+
+a:hover.update {
+    background-color: transparent;
+    color: #3b3b3b;
+    text-decoration: none;
+    text-align: center;
+    padding: 0px 0px;
 }
