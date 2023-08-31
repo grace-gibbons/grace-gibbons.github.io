@@ -8,7 +8,7 @@
     <h1>Update 2: July 2023 - August 2023</h1>
 
     <div>
-        I’ve made substantial progress in about a month and a half and I’m very excited to show off what I’ve done! I’m going to split this update into bug fixes and features added, because there are a lot of changes to cover in both of those areas.
+        I've made substantial progress in about a month and a half and I'm very excited to show off what I've done! I'm going to split this update into bug fixes and features added, because there are a lot of changes to cover in both of those areas.
     </div>
 
     <h2>Bug Fixes</h2>
@@ -28,7 +28,7 @@
     <br />
 
     <div>
-        Player now falls at a normal speed when they crouch. Previously, they could slow themselves down in the air by crouching (which halves the player’s speed).
+        Player now falls at a normal speed when they crouch. Previously, they could slow themselves down in the air by crouching (which halves the player's speed).
     </div>
     <br />
 
@@ -48,7 +48,7 @@
     <br />
 
     <div>
-        Fixed error where inventory text was not updated upon level start, so the slots would say “NULL” instead of “null_item”
+        Fixed error where inventory text was not updated upon level start, so the slots would say "NULL" instead of "null_item"
     </div>
     <figure>
         <img src="../images/update2/nullItem.png" alt="Game Image" width="40%">
@@ -57,7 +57,7 @@
     <br />
 
     <div>
-        Fixed bug where game enters fullscreen, and causes the entire tilemap to vanish. It’s worth noting that I fixed this error, but upon testing it on another device, found that a similar error still remains present. Because the code is identical, I can only assume that there is a discrepancy between how different devices handle rendering, which is something I need to look into.
+        Fixed bug where game enters fullscreen, and causes the entire tilemap to vanish. It's worth noting that I fixed this error, but upon testing it on another device, found that a similar error still remains present. Because the code is identical, I can only assume that there is a discrepancy between how different devices handle rendering, which is something I need to look into.
     </div>
     <figure>
         <img src="../images/update2/lightProblem.png" alt="Game Image" width="50%">
@@ -70,7 +70,7 @@
 
     <div>
         <b>Level Loading</b><br />
-        Implemented the ability to load a level from a startup file (startup.json), so the startup level can easily be changed in an external file. I also added the ability to write the current level to that file, so we can “save” a level, however I have yet to actually include this feature since I don’t have a save button.
+        Implemented the ability to load a level from a startup file (startup.json), so the startup level can easily be changed in an external file. I also added the ability to write the current level to that file, so we can "save" a level, however I have yet to actually include this feature since I don't have a save button.
     </div>
     <br />
 
@@ -82,7 +82,7 @@
 
     <div>
         <b>Audio</b><br />
-        I have added a very simplistic audio player to load and play .wav files. This functionality has yet to be used anywhere, but when I want to start adding sounds and music, I will not have to worry about the lower level implementation. I am using SDL’s mixer library to handle the audio files.
+        I have added a very simplistic audio player to load and play .wav files. This functionality has yet to be used anywhere, but when I want to start adding sounds and music, I will not have to worry about the lower level implementation. I am using SDL's mixer library to handle the audio files.
     </div>
     <br />
 
@@ -94,7 +94,7 @@
 
     <div>
         <b>Triggers</b><br />
-        A LocationKeyboardTrigger has been added, which detects the player’s location on the map and keyboard input. Currently, I am just waiting for the key ‘T’, but down the line I want to be able to define what keys I want to listen for. This trigger will be used to mimic portal functionality, as I can make triggers that detect the player’s location link to reactions that teleport the player to another location. I have also created a YAxisTrigger which detects the player’s location on the y-axis. This trigger will be helpful in checking if the player has completely fallen off the map.
+        A LocationKeyboardTrigger has been added, which detects the player's location on the map and keyboard input. Currently, I am just waiting for the key 'T', but down the line I want to be able to define what keys I want to listen for. This trigger will be used to mimic portal functionality, as I can make triggers that detect the player's location link to reactions that teleport the player to another location. I have also created a YAxisTrigger which detects the player's location on the y-axis. This trigger will be helpful in checking if the player has completely fallen off the map.
     </div>
     <br />
 
@@ -104,11 +104,11 @@
         Light Visibility: Toggles the light sources to render or not <br />
         Map Visibility: Toggles the visibility of the tilemap<br />
         Next Level: Loads and begins the next level<br />
-        Player Light Visibility: Toggles the visibility of the player’s light<br />
+        Player Light Visibility: Toggles the visibility of the player's light<br />
         Toggle Dark: Toggles the darkness to be on or off<br />
         Toggle Bright: Toggles the bright tilemap effect<br />
-        Toggle Flight: Toggles the player’s ability to fly<br />
-        Toggle Jump: Switches player’s jump height between normal and high<br />
+        Toggle Flight: Toggles the player's ability to fly<br />
+        Toggle Jump: Switches player's jump height between normal and high<br />
         Toggle Keyboard: Toggles whether or not the keyboard is accepting input<br />
         Toggle Inventory Lights: Switches how many light sources the inventory can carry (one or many)<br />
         UI Visibility: Toggles the visibility of the UI<br />
@@ -149,7 +149,7 @@
 
     <div>
         <b>Enemies</b><br />
-        I have attempted to create enemies before, but the logic fell through because of issues with the light engine. Enemies are meant to be able to detect or “see” light sources within an area that they can see. They will then pathfind to the “brightest” light they can see. After rectifying issues in the light engine (done in the previous update), I was able to bring enemies back into play, using some of the old pathfinding code I had already written. Additionally, for debugging purposes, I added a feature that will allow me to see what tiles an enemy can see.
+        I have attempted to create enemies before, but the logic fell through because of issues with the light engine. Enemies are meant to be able to detect or "see" light sources within an area that they can see. They will then pathfind to the "brightest" (biggest) light they can see. After rectifying issues in the light engine (done in the previous update), I was able to bring enemies back into play, using some of the old pathfinding code I had already written. Additionally, for debugging purposes, I added a feature that will allow me to see what tiles an enemy can see.
     </div>
     <figure>
         <img src="../images/update2/enemyVision.png" alt="Game Image" width="50%">
